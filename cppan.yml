@@ -1,5 +1,5 @@
 local_settings:
-    use_shared_libs: false
+    use_shared_libs: true
     #use_cache: false # turn on with MT
     #build:
         #cxx_flags_release: /MT
