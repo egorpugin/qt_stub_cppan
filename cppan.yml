@@ -1,0 +1,39 @@
+local_settings:
+    use_shared_libs: false
+    #use_cache: false # turn on with MT
+    #build:
+        #cxx_flags_release: /MT
+
+projects:
+    my:
+        executable_type: win32
+
+        files:
+            - src/.*
+
+        dependencies:
+            - pvt.cppan.demo.qtproject.qt.base.widgets: 5
+            - pvt.cppan.demo.qtproject.qt.base.winmain: 5
+            - pvt.cppan.demo.qtproject.qt.base.plugins.platforms.windows: 5
+            - pvt.cppan.demo.boost.algorithm: 1
+
+            - name: pvt.cppan.demo.qtproject.qt.base.core
+              ref: CORE
+              version: 5
+            - name: pvt.cppan.demo.qtproject.qt.base.tools.moc
+              ref: MOC_COMMAND
+              version: 5
+
+        post_sources: |
+            include(${CORE_SDIR}/src/corelib/Qt5CoreMacros.cmake)
+
+            set(moc ${src})
+            list(FILTER moc INCLUDE REGEX ".h$")
+            find_moc_targets(moc ${moc})
+
+            set(Qt5Core_MOC_EXECUTABLE ${MOC_COMMAND})
+            qt5_wrap_cpp(moc ${moc} TARGET ${this})
+            set(src ${src} ${moc})
+
+
+
